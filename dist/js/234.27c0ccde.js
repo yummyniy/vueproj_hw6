@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkhw6"]=self["webpackChunkhw6"]||[]).push([[234],{234:function(n,r,u){u.r(r),u.d(r,{default:function(){return h}});var e=u(3396);function t(n,r){return(0,e.wg)(),(0,e.iD)("h2",null,"後台訂單")}var c=u(89);const a={},f=(0,c.Z)(a,[["render",t]]);var h=f}}]);
-//# sourceMappingURL=234.27c0ccde.js.map

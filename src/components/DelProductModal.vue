@@ -1,5 +1,5 @@
 <template>
-  <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel" aria-hidden="true">
+  <div id="delProductModal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel" aria-hidden="true" ref="modal">
     <div class="modal-dialog">
       <div class="modal-content border-0">
         <div class="modal-header bg-danger text-white">
@@ -23,11 +23,29 @@ export default {
   },
   data () {
     return {
+      tempProduct: {},
       delProductModal: {},
       qty: 1
     }
   },
+  watch: {
+    product () {
+      this.tempProduct = this.product
+    }
+  },
   methods: {
+    delProduct () {
+      this.$http.delete(process.env.VUE_APP_API + '/api/' + process.env.VUE_APP_PATH + '/admin/product/' + this.tempProduct.id)
+        .then((res) => {
+          this.closeModal()
+          alert(res.data.message)
+          this.$emit('get-products')
+          // this.getProducts();
+        })
+        .catch((error) => {
+          console.dir(error)
+        })
+    },
     openModal () {
       this.delProductModal.show()
     },
@@ -37,8 +55,7 @@ export default {
   },
   mounted () {
     this.delProductModal = new Modal(this.$refs.modal, {
-      keyboard: false,
-      backdrop: 'static'
+      keyboard: false
     })
   }
 }

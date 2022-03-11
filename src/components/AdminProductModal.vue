@@ -1,5 +1,5 @@
 <template>
-  <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div id="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" ref="modal">
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">
@@ -91,15 +91,55 @@
 import Modal from 'bootstrap/js/dist/modal'
 export default {
   props: {
-    product: {}
+    product: {
+      type: Object,
+      default () { return {} }
+    },
+    isNew: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
+      tempProduct: {},
       addProductModal: {},
       qty: 1
     }
   },
+  watch: {
+    product () {
+      this.tempProduct = this.product
+      if (!this.tempProduct.imagesUrl) {
+        this.tempProduct.imagesUrl = []
+      }
+      if (!this.tempProduct.imageUrl) {
+        this.tempProduct.imageUrl = ''
+      }
+    }
+  },
   methods: {
+    updateProduct () {
+      let id = ''
+      let method = 'post'
+      if (!this.isNew) {
+        method = 'put'
+        id = '/' + this.tempProduct.id
+      }
+      this.$http[method](process.env.VUE_APP_API + '/api/' + process.env.VUE_APP_PATH + '/admin/product' + id, { data: this.tempProduct })
+        .then((res) => {
+          this.closeModal()
+          alert(res.data.message)
+          this.$emit('get-products')
+        })
+        .catch((error) => {
+          console.dir(error)
+        })
+    },
+    addImage () {
+      this.tempProduct.imagesUrl = []
+      this.tempProduct.imagesUrl.push('')
+    },
     openModal () {
       this.addProductModal.show()
     },

@@ -1,6 +1,6 @@
 <template>
-  <h2>後台產品列表</h2>
   <div class="container">
+    <h2>後台產品列表</h2>
     <div class="text-end mt-4">
       <button class="btn btn-primary" @click="showModal('new')">
         建立新的產品
@@ -41,13 +41,13 @@
     <!-- 分頁元件 -->
   </div>
   <!-- Modal -->
-  <!-- <AddProductModal  ref="addProductModal" :temp-product="tempProduct" :is-new="isNew" v-on:get-products="getProducts"></AddProductModal> -->
-  <!-- <DelProductModal :temp-product="tempProduct" v-on:get-products="getProducts"></DelProductModal> -->
+  <AddProductModal ref="addProductModal" :product="tempProduct" :is-new="isNew" v-on:get-products="getProducts"></AddProductModal>
+  <DelProductModal ref="delProductModal" :product="tempProduct" v-on:get-products="getProducts"></DelProductModal>
   <!-- Modal -->
 </template>
 <script>
-// import AddProductModal from '@/components/AdminProductModal.vue'
-// import DelProductModal from '@/components/DelProductModal.vue'
+import AddProductModal from '@/components/AdminProductModal.vue'
+import DelProductModal from '@/components/DelProductModal.vue'
 import PaginationComp from '@/components/PaginationComp.vue'
 export default {
   data () {
@@ -61,8 +61,8 @@ export default {
     }
   },
   components: {
-    // AddProductModal,
-    // DelProductModal,
+    AddProductModal,
+    DelProductModal,
     PaginationComp
   },
   methods: {
@@ -91,7 +91,7 @@ export default {
         this.$refs.addProductModal.openModal()
       } else if (act === 'delete') {
         this.tempProduct = { ...product }
-        // delProductModal.show();
+        this.$refs.delProductModal.openModal()
       }
     }
   },
